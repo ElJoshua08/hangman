@@ -1,29 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta
-      name="viewport"
       content="width=device-width, initial-scale=1.0"
+      name="viewport"
     />
-    <title>Hangman Game</title>
+    <title>Hangman: A Victorian Pastime</title>
+    <link
+      href="data:image/x-icon;base64,"
+      rel="icon"
+      type="image/x-icon"
+    />
+    <link
+      crossorigin=""
+      href="https://fonts.gstatic.com/"
+      rel="preconnect"
+    />
+    <link
+      as="style"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=IM+Fell+English:wght@400&amp;family=Montserrat:wght@400;500;700"
+      onload="this.rel='stylesheet'"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="globals.css"
+    />
     <link
       rel="stylesheet"
       href="styles.css"
     />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style type="text/tailwindcss">
-      @theme {
-        --color-background: #1e1e1e;
-        --color-clifford: #da373d;
-      }
-    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   </head>
-  <body class="bg-background">
-    <script
-      src="app.js"
-      type="module"
-      defer
-    ></script>
+  <body class="victorian-bg">
+    <div
+      class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden"
+    >
+      <header
+        class="flex items-center justify-between whitespace-nowrap px-10 py-6"
+      >
+        <div class="flex items-center gap-3">
+          <svg
+            class="h-10 w-10 text-[var(--accent-color)]"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M12 21a9 9 0 110-18 9 9 0 010 18z"></path>
+            <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"></path>
+            <path
+              d="M12 2v2m0 16v2m8-10h-2M4 12H2m15.364-5.364l-1.414-1.414M6.05 17.95l-1.414-1.414m11.314 0l-1.414 1.414M6.05 6.05l-1.414 1.414"
+            ></path>
+          </svg>
+          <h1
+            class="font-serif-display text-4xl font-normal tracking-wider text-[var(--text-color)]"
+          >
+            Hangman
+          </h1>
+        </div>
+        <nav
+          class="flex items-center gap-8 text-base font-medium text-[var(--accent-color)] justify-center"
+        >
+          <a
+            class="hover:text-[var(--primary-color)] transition-colors"
+            href="#"
+          >
+            How to Play
+          </a>
+          <a
+            class="hover:text-[var(--primary-color)] transition-colors"
+            href="#"
+          >
+            Statistics
+          </a>
+        </nav>
+        <div class="flex items-center gap-4 relative">
+          <button
+            class="flex items-center justify-center size-10 rounded-full bg-white/60 hover:bg-white/90 border border-[var(--border-color)] transition-colors"
+          >
+            <span class="material-symbols-outlined text-[var(--accent-color)]">
+              settings
+            </span>
+          </button>
+
+          <div
+            class="absolute -bottom-4 right-0 translate-y-full min-w-lg flex flex-col gap-y-2"
+          >
+            <button
+              id="language-spanish"
+              class="btn-primary text-base font-bold tracking-wide transition-all duration-300 transform hover:-translate-y-1 px-2 py-2 rounded-md"
+            >
+              Español
+            </button>
+            <button
+              id="language-english"
+              class="btn-primary text-base font-bold tracking-wide transition-all duration-300 transform hover:-translate-y-1 px-2 py-2 rounded-md"
+            >
+              English
+            </button>
+          </div>
+        </div>
+      </header>
+      <main class="flex-1 flex items-center justify-center py-12 px-4">
+        <div class="w-full max-w-3xl mx-auto text-center">
+          <h2
+            class="font-serif-display text-6xl font-normal text-[var(--text-color)] leading-tight"
+          >
+            A Game of Wits &amp; Words
+          </h2>
+
+          <div class="grid grid-cols-3 gap-6 max-w-lg mx-auto mt-12">
+            <label class="relative cursor-pointer">
+              <input
+                checked=""
+                class="sr-only peer"
+                name="difficulty"
+                type="radio"
+                value="Easy"
+              />
+              <div
+                class="p-6 card difficulty-card difficulty-card.peer-checked:peer-checked transition-all duration-300"
+              >
+                <h3
+                  class="font-serif-display text-2xl font-normal text-[var(--text-color)]"
+                >
+                  Easy
+                </h3>
+                <p class="text-sm text-[var(--accent-color)] mt-1">
+                  6-letter words
+                </p>
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input
+                class="sr-only peer"
+                name="difficulty"
+                type="radio"
+                value="Medium"
+              />
+              <div
+                class="p-6 card difficulty-card difficulty-card.peer-checked:peer-checked transition-all duration-300"
+              >
+                <h3
+                  class="font-serif-display text-2xl font-normal text-[var(--text-color)]"
+                >
+                  Medium
+                </h3>
+                <p class="text-sm text-[var(--accent-color)] mt-1">
+                  8-letter words
+                </p>
+              </div>
+            </label>
+            <label class="relative cursor-pointer">
+              <input
+                class="sr-only peer"
+                name="difficulty"
+                type="radio"
+                value="Hard"
+              />
+              <div
+                class="p-6 card difficulty-card difficulty-card.peer-checked:peer-checked transition-all duration-300"
+              >
+                <h3
+                  class="font-serif-display text-2xl font-normal text-[var(--text-color)]"
+                >
+                  Hard
+                </h3>
+                <p class="text-sm text-[var(--accent-color)] mt-1">
+                  10+ letter words
+                </p>
+              </div>
+            </label>
+          </div>
+          <div class="mt-12">
+            <button
+              class="w-full max-w-sm mx-auto h-16 px-8 rounded-full btn-primary text-xl font-bold tracking-wide transition-all duration-300 transform hover:-translate-y-1"
+            >
+              Begin Amusement
+            </button>
+          </div>
+          <!-- <div
+            class="mt-20 border-t-2 border-dashed border-[var(--border-color)] pt-10"
+          >
+            <h3
+              class="font-serif-display text-3xl font-normal text-[var(--text-color)] tracking-wider"
+            >
+              Your Record of Achievements
+            </h3>
+            <div
+              class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto"
+            >
+              <div class="card p-6 flex flex-col items-center justify-center">
+                <p class="text-5xl font-bold text-[var(--text-color)]">150</p>
+                <p
+                  class="text-base font-medium text-[var(--accent-color)] mt-2"
+                >
+                  Games Played
+                </p>
+              </div>
+              <div class="card p-6 flex flex-col items-center justify-center">
+                <p class="text-5xl font-bold text-[var(--text-color)]">120</p>
+                <p
+                  class="text-base font-medium text-[var(--accent-color)] mt-2"
+                >
+                  Games Won
+                </p>
+              </div>
+              <div class="card p-6 flex flex-col items-center justify-center">
+                <p class="text-5xl font-bold text-[var(--primary-color)]">
+                  80%
+                </p>
+                <p
+                  class="text-base font-medium text-[var(--accent-color)] mt-2"
+                >
+                  Win Rate
+                </p>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </main>
+    </div>
   </body>
 </html>
