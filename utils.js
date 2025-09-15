@@ -1,25 +1,20 @@
-import { CONFIG } from "./config";
 
-/**
- *
- * @param {*} language @default es @description language in which the word will be generated
- * @param {*} minLength @default 4 @description minimum length of the word
- * @param {*} maxLenght @default 8 @description maximum length of the word
- *
- * @returns {string} random word
- */
-export const getRandomWord = async (
-  language = "es",
-  minLength = 4,
-  maxLenght = 8
-) => {
-  const url = `${CONFIG.API_URL}?language=${language}&minLength=${minLength}&maxLength=${maxLenght}&words=1`;
+export const setLocalStorage = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
 
-  try {
-    const data = await fetch(url).then((res) => res.json());
+export const getLocalStorage = (key) => {
+  const value = localStorage.getItem(key);
 
-    return data.word;
-  } catch (error) {
-    throw new Error("Word could not be fetched.");
+  if (value) {
+    return JSON.parse(value);
   }
+
+  return null;
+};
+
+export const getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
