@@ -1,12 +1,16 @@
-import { getTranslation } from "./translations.js";
-import { getLocalStorage, setLocalStorage } from "./utils.js";
+import "./components/index.js";
+
+import * as translations from "./constants/translations.js";
+import * as utils from "./constants/utils.js";
+
+const { getTranslation } = translations;
+const { getLocalStorage, setLocalStorage } = utils;
 
 /**
  * *Control of language
  */
 
 const $languages = document.querySelectorAll("[data-language]");
-const $keys = document.querySelectorAll("[data-language-key]");
 
 document.addEventListener("DOMContentLoaded", () => {
   const localStorageValue = getLocalStorage("prefered-language");
@@ -15,6 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!localStorageValue) {
     setLocalStorage("prefered-language", $languages[0].dataset.language);
   }
+
+  // ? We are querying the keys inside the listener instead of one global query because we want to listen for new keys like the difficulty-cards custom element keys.
+  const $keys = document.querySelectorAll("[data-language-key]");
 
   $keys.forEach((key) => {
     key.innerHTML = getTranslation(preferedLanguage, key.dataset.languageKey);
@@ -40,6 +47,8 @@ receiveLanguageChannel.onmessage = (e) => {
   const language = e.data.language;
 
   // ! This can be made a function maybe from the language.js file
+  const $keys = document.querySelectorAll("[data-language-key]");
+
   $keys.forEach((key) => {
     key.innerHTML = getTranslation(language, key.dataset.languageKey);
   });
@@ -81,32 +90,3 @@ document.addEventListener("click", (e) => {
     }
   });
 });
-
-/**
- * * Custom components
- */
-
-class DifficultyCard extends HTMLElement {
-  connectedCallback() {
-    const hoverRottation = Math.floor(Math.random() * 3 + 3);
-
-    const title = this.getAttribute("title");
-    const description = this.getAttribute("description");
-    const key = this.getAttribute("key");
-
-    this.innerHTML = `
-      <div class="p-6 card difficulty-card transition-all duration-300">
-        <h3 class="font-serif-display text-2xl font-normal text-[var(--text-color)]"
-            data-language-key="${key}">
-          ${title}
-        </h3>
-        <p class="text-sm text-[var(--accent-color)] mt-1"
-           data-language-key="${key}Description">
-          ${description}
-        </p>
-      </div>
-    `;
-  }
-}
-
-customElements.define("difficulty-card", DifficultyCard);

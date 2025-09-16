@@ -7,6 +7,13 @@
   --border-color: #d3c0ae;
 }
 
+* {
+  &::selection {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+  }
+}
+
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -24,6 +31,9 @@ body {
 .btn-primary {
   background-color: var(--primary-color);
   color: var(--bg-color);
+  padding: 1rem 0;
+  border-radius: 999rem;
+
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px var(--border-color);
 
@@ -34,7 +44,7 @@ body {
   }
 
   &.inactive {
-    filter: saturate(0.75);
+    filter: saturate(0.55);
   }
 }
 
@@ -66,7 +76,7 @@ body {
 .dialog {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  transition: opacity 100ms ease-in-out, visibility 0.3s ease-in-out;
 
   &.open {
     opacity: 1;

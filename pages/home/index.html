@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0"
+      name="viewport"
+    />
+    <title data-language-key="title">Hangman: A Victorian Pastime</title>
+    <link
+      href="data:image/x-icon;base64,"
+      rel="icon"
+      type="image/x-icon"
+    />
+    <link
+      crossorigin=""
+      href="https://fonts.gstatic.com/"
+      rel="preconnect"
+    />
+    <link
+      as="style"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=IM+Fell+English:wght@400&amp;family=Montserrat:wght@400;500;700"
+      onload="this.rel='stylesheet'"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="../../globals.css"
+    />
+    <link
+      rel="stylesheet"
+      href="styles.css"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body class="victorian-bg">
+    <div
+      class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden"
+    >
+      <header
+        class="flex items-center justify-between whitespace-nowrap px-10 py-6"
+      >
+        <div class="flex items-center gap-3">
+          <svg
+            class="size-6 text-[var(--accent-color)]"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M12 21a9 9 0 110-18 9 9 0 010 18z"></path>
+            <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"></path>
+            <path
+              d="M12 2v2m0 16v2m8-10h-2M4 12H2m15.364-5.364l-1.414-1.414M6.05 17.95l-1.414-1.414m11.314 0l-1.414 1.414M6.05 6.05l-1.414 1.414"
+            ></path>
+          </svg>
+          <h1
+            class="font-serif-display text-lg font-normal tracking-wider text-[var(--text-color)]"
+            data-language-key="name"
+          >
+            Hangman
+          </h1>
+        </div>
+        <nav
+          class="flex items-center gap-8 text-base font-medium text-[var(--accent-color)] justify-center"
+        >
+          <a
+            class="hover:text-[var(--primary-color)] transition-colors"
+            href="#"
+            data-language-key="howToPlay"
+          >
+            How to Play
+          </a>
+        </nav>
+        <div class="flex items-center gap-4 relative">
+          <button
+            data-trigger-for="language-dialog"
+            class="btn-outline flex items-center justify-center size-10 rounded-full"
+          >
+            <span class="material-symbols-outlined text-[var(--accent-color)]">
+              language
+            </span>
+          </button>
+
+          <div
+            data-dialog="language-dialog"
+            class="absolute -bottom-4 right-0 translate-y-full min-w-lg flex flex-col gap-y-2"
+          >
+            <button
+              data-language="en-EN"
+              class="btn-outline"
+            >
+              English
+            </button>
+            <button
+              data-language="es-ES"
+              class="btn-outline"
+            >
+              Español
+            </button>
+          </div>
+        </div>
+      </header>
+      <main class="flex-1 flex items-center justify-center pt-12 pb-16 md:pb-0 px-4">
+        <div class="w-full max-w-3xl mx-auto text-center">
+          <h2
+            class="font-serif-display text-6xl font-normal text-[var(--text-color)] leading-tight"
+            data-language-key="hero"
+          >
+            A Game of Wits &amp; Words
+          </h2>
+
+          <div class="flex flex-col lg:flex-row gap-12 max-w-lg mx-auto mt-12">
+            <difficulty-card
+              difficulty="easy"
+              title="Easy"
+              key="easy"
+              description="6-letter words"
+              description-key="easyDescription"
+            ></difficulty-card>
+
+            <difficulty-card
+              difficulty="medium"
+              key="medium"
+              title="Medium"
+              description="8-letter words"
+              description-key="mediumDescription"
+            ></difficulty-card>
+
+            <difficulty-card
+              difficulty="hard"
+              key="hard"
+              title="Hard"
+              description="10+ letter words"
+              description-key="hardDescription"
+            ></difficulty-card>
+          </div>
+          <div class="mt-12">
+            <button
+              id="start-button"
+              class="w-full max-w-sm mx-auto btn-primary text-xl font-bold tracking-wide transition-all duration-300"
+              data-language-key="start"
+            >
+              Begin Amusement
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script
+      src="../../globals.js"
+      type="module"
+    ></script>
+
+    <script
+      src="script.js"
+      type="module"
+    ></script>
+  </body>
+</html>

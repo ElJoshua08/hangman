@@ -1,0 +1,18 @@
+.difficulty-card {
+  --hover-rotation: 0deg;
+  --hover-scale: 1;
+  --selected-rotation: 0deg;
+  --selected-scale: 1;
+
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(var(--hover-scale)) rotate(var(--hover-rotation));
+    box-shadow: 0 8px 20px rgba(88, 57, 28, 0.22);
+  }
+
+  &.selected {
+    transform: scale(var(--selected-scale)) rotate(var(--selected-rotation));
+    box-shadow: 5px 5px 0 0 rgba(88, 57, 28, 0.42);
+  }
+}
