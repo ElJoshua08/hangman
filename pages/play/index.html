@@ -1,26 +1,206 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="en"
+  ><head>
+    <meta charset="utf-8" />
     <meta
-      name="viewport"
       content="width=device-width, initial-scale=1.0"
+      name="viewport"
     />
-    <title>Hangman Game</title>
+    <title data-language-key="easy">Pastel Victorian Hangman</title>
+    <link
+      href="https://fonts.googleapis.com"
+      rel="preconnect"
+    />
+    <link
+      crossorigin=""
+      href="https://fonts.gstatic.com"
+      rel="preconnect"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Roboto:wght@300;400&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link
+      rel="stylesheet"
+      href="styles.css"
+    />
     <link
       rel="stylesheet"
       href="../../globals.css"
     />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style type="text/tailwindcss">
-     
-    </style>
   </head>
-  <body>
-    <script
-      type="module"
-      src="./script.js"
-    ></script>
-  </body>
-</html>
+  <body class="min-h-screen flex items-center justify-center p-4">
+    <main
+      class="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+    >
+      <div class="flex flex-col items-center justify-center">
+        <svg
+          class="w-full max-w-sm hangman-svg"
+          viewBox="0 0 200 250"
+        >
+          <path
+            class="gallows-wood hangman-part part-1"
+            d="M 20 230 C 25 225, 35 225, 40 230 L 160 230 C 165 225, 175 225, 180 230"
+          ></path>
+          <path
+            class="gallows-wood hangman-part part-2"
+            d="M 60 230 V 20 C 60 15, 65 10, 70 10 H 70"
+          ></path>
+          <path
+            class="gallows-wood hangman-part part-3"
+            d="M 60 20 H 140 C 145 20, 150 25, 150 30 V 30"
+          ></path>
+          <line
+            class="hangman-part part-4"
+            x1="140"
+            x2="140"
+            y1="20"
+            y2="50"
+          ></line>
+          <g class="character">
+            <circle
+              class="hangman-part head"
+              cx="140"
+              cy="70"
+              fill="var(--bg-color)"
+              r="20"
+              stroke-width="2.5"
+            ></circle>
+            <path
+              class="hangman-part body"
+              d="M 140 90 L 140 150"
+              stroke-width="3"
+            ></path>
+            <path
+              class="hangman-part left-arm"
+              d="M 140 110 C 130 115, 120 125, 110 130"
+              fill="none"
+            ></path>
+            <path
+              class="hangman-part right-arm"
+              d="M 140 110 C 150 115, 160 125, 170 130"
+              fill="none"
+            ></path>
+            <path
+              class="hangman-part left-leg"
+              d="M 140 150 C 130 160, 120 170, 110 180"
+              fill="none"
+            ></path>
+            <path
+              class="hangman-part right-leg"
+              d="M 140 150 C 150 160, 160 170, 170 180"
+              fill="none"
+            ></path>
+          </g>
+        </svg>
+      </div>
+      <div
+        class="flex flex-col items-center justify-center gap-8 card-container p-8"
+      >
+        <div class="text-center">
+          <h1
+            class="text-6xl font-bold text-[var(--text-color)] tracking-wide font-serif"
+            >Hangman</h1
+          >
+          <p class="text-xl text-[var(--primary-color)] font-normal mt-1"
+            >A Victorian Pastime</p
+          >
+        </div>
+        <div
+          class="flex justify-center items-end gap-2 md:gap-4 h-20"
+          id="word-display"
+        >
+          <span
+            class="text-4xl md:text-5xl font-serif font-bold word-display-letter"
+            >H</span
+          >
+          <span
+            class="text-4xl md:text-5xl font-serif font-bold word-display-letter"
+          ></span>
+          <span
+            class="text-4xl md:text-5xl font-serif font-bold word-display-letter"
+            >N</span
+          >
+          <span
+            class="text-4xl md:text-5xl font-serif font-bold word-display-letter"
+            >G</span
+          >
+          <span
+            class="text-4xl md:text-5xl font-serif font-bold word-display-letter"
+            >M</span
+          >
+          <span
+            class="text-4xl md:text-5xl font-serif font-bold word-display-letter"
+          ></span>
+          <span
+            class="text-4xl md:text-5xl font-serif font-bold word-display-letter"
+            >N</span
+          >
+        </div>
+        <div
+          class="w-full max-w-lg p-4"
+          id="keyboard"
+        >
+          <div
+            class="grid grid-cols-7 gap-2 text-center text-lg font-light text-[var(--text-color)]"
+          >
+            <button class="keyboard-key p-2">Q</button>
+            <button class="keyboard-key p-2">W</button>
+            <button class="keyboard-key p-2">E</button>
+            <button class="keyboard-key p-2">R</button>
+            <button class="keyboard-key p-2">T</button>
+            <button class="keyboard-key p-2">Y</button>
+            <button class="keyboard-key p-2">U</button>
+            <button class="keyboard-key p-2">I</button>
+            <button class="keyboard-key p-2">O</button>
+            <button class="keyboard-key p-2">P</button>
+            <button class="keyboard-key p-2 col-start-2">A</button>
+            <button class="keyboard-key used p-2">S</button>
+            <button class="keyboard-key p-2">D</button>
+            <button class="keyboard-key p-2">F</button>
+            <button class="keyboard-key p-2">G</button>
+            <button class="keyboard-key p-2">H</button>
+            <button class="keyboard-key p-2">J</button>
+            <button class="keyboard-key p-2">K</button>
+            <button class="keyboard-key p-2">L</button>
+            <button class="keyboard-key p-2 col-start-3">Z</button>
+            <button class="keyboard-key p-2">X</button>
+            <button class="keyboard-key p-2">C</button>
+            <button class="keyboard-key used p-2">V</button>
+            <button class="keyboard-key p-2">B</button>
+            <button class="keyboard-key p-2">N</button>
+            <button class="keyboard-key p-2">M</button>
+          </div>
+        </div>
+        <div
+          class="w-full max-w-md text-center p-6 bg-[var(--correct-color)]/90 message-box hidden"
+          id="win-message"
+        >
+          <p class="text-3xl font-bold text-white font-serif"
+            >Huzzah! You've Won!</p
+          >
+          <p class="text-lg text-white mt-1">The word was: HANGMAN</p>
+          <button
+            class="mt-4 px-6 py-2 bg-white text-[var(--text-color)] font-bold rounded-full hover:bg-gray-100 transition-colors shadow-md"
+            >Play Again</button
+          >
+        </div>
+        <div
+          class="w-full max-w-md text-center p-6 bg-[var(--wrong-color)]/90 message-box hidden"
+          id="loss-message"
+        >
+          <p class="text-3xl font-bold text-white font-serif"
+            >Alas! Game Over!</p
+          >
+          <p class="text-lg text-white mt-1">The word was: HANGMAN</p>
+          <button
+            class="mt-4 px-6 py-2 bg-white text-[var(--text-color)] font-bold rounded-full hover:bg-gray-100 transition-colors shadow-md"
+            >Try Again</button
+          >
+        </div>
+      </div>
+    </main>
+  </body></html
+>
