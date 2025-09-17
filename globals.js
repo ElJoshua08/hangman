@@ -14,10 +14,14 @@ const $languages = document.querySelectorAll("[data-language]");
 
 document.addEventListener("DOMContentLoaded", () => {
   const localStorageValue = getLocalStorage("prefered-language");
-  const preferedLanguage = localStorageValue || navigator.language;
+
+  const preferedLanguage = localStorageValue || navigator.language || "en-EN";
 
   if (!localStorageValue) {
-    setLocalStorage("prefered-language", $languages[0].dataset.language);
+    setLocalStorage(
+      "prefered-language",
+      $languages[0] ? $languages.dataset.language : "en-EN",
+    );
   }
 
   // ? We are querying the keys inside the listener instead of one global query because we want to listen for new keys like the difficulty-cards custom element keys.
@@ -70,7 +74,7 @@ $triggers.forEach((trigger) => {
   trigger.addEventListener("click", (e) => {
     e.preventDefault();
     const dialog = document.querySelector(
-      `[data-dialog="${trigger.dataset.triggerFor}"]`
+      `[data-dialog="${trigger.dataset.triggerFor}"]`,
     );
 
     dialog.classList.toggle("open");

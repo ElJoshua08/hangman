@@ -19,7 +19,7 @@ export class DisplayCharacter extends HTMLElement {
 
   render() {
     this.innerHTML = `
-      <span class="text-4xl md:text-5xl font-serif font-bold character">
+      <span class="text-4xl md:text-5xl font-serif font-bold character uppercase">
         ${this.show === "true" ? this.character : ""}
       </span>
     `;

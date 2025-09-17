@@ -68,7 +68,7 @@
       </div>
 
       <div
-        id="timer"
+        id="countdown"
         class="flex items-center gap-4 relative text-lg"
       >
         2:00
@@ -77,14 +77,14 @@
       <div class=""></div>
     </header>
     <main
-      class="w-full h-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center px-24 grow pb-12"
+      class="w-full h-full mx-auto flex flex-col md:flex-row gap-12 items-center px-24 grow md:pb-12"
     >
-      <div> </div>
+      <div class="h-full md:h-0 grow"> </div>
       <div
-        class="flex flex-col items-center justify-center gap-y-24 card-container py-16 h-full card"
+        class="flex flex-col items-center justify-center gap-y-24 card-container w-full py-16 md:h-full card"
       >
         <div
-          class="flex justify-center items-end gap-2 md:gap-4 h-20"
+          class="flex justify-center items-end gap-2 md:gap-4"
           id="word-display"
         >
         </div>

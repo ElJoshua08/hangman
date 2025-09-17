@@ -6,85 +6,94 @@ const keys = [
   ["z", "x", "c", "v", "b", "n", "m"],
 ];
 
-const usedKeys = [];
-let word = "";
+// Change everything to a game class
 
-const $wordDisplay = document.getElementById("word-display");
-const $keyboard = document.getElementById("keyboard");
+// Game state enum
+const GAME_STATE = Object.freeze({
+  PLAYING: Symbol("playing"),
+  PAUSED: Symbol("paused"),
+});
 
-async function init() {
-  try {
-    word = await getRandomWord();
+const MAX_COUNTDOWN = 120;
 
-    console.log(word);
+class Game {
+  constructor() {
+    this.gameState = GAME_STATE.PLAYING;
+    this.countdown = MAX_COUNTDOWN;
 
-    renderWordDisplay();
-    renderKeyboard();
-    checkForKeyPress();
-  } catch (error) {
-    console.error("Game initialization failed:", error);
-    $wordDisplay.textContent = "Error fetching word";
+    this.word = "";
   }
-}
 
-function renderKeyboard() {
-  keys.forEach((row) => {
-    const $row = document.createElement("div");
-    $row.className = "flex flex-row items-center justify-center gap-4";
+  async init() {
+    this.word = await getRandomWord();
+    this.setup();
+  }
 
-    row.forEach((key) => {
-      const $key = document.createElement("button");
-      $key.className = "keyboard-key";
-      $key.textContent = key;
-      $key.dataset.key = key;
+  setup() {
+    this.displayKeyboard();
+    this.displayWordHint();
+    this.displayCountdown();
+  }
 
-      $key.addEventListener("click", (e) => {
-        e.preventDefault();
-        useKey(key);
+  displayKeyboard() {
+    const $keyboard = document.getElementById("keyboard");
+
+    keys.forEach((row) => {
+      const $row = document.createElement("div");
+      $row.className = "flex flex-row items-center justify-center gap-4";
+
+      row.forEach((key) => {
+        const $key = document.createElement("button");
+        $key.className = "keyboard-key";
+        $key.textContent = key;
+        $key.dataset.key = key;
+
+        $key.addEventListener("click", (e) => {
+          e.preventDefault();
+          useKey(key);
+        });
+
+        $row.appendChild($key);
       });
 
-      $row.appendChild($key);
+      $keyboard.appendChild($row);
     });
+  }
 
-    $keyboard.appendChild($row);
-  });
-}
+  displayWordHint() {
+    const $wordDisplay = document.getElementById("word-display");
 
-function renderWordDisplay() {
-  const splitWord = word.split("");
+    const splitWord = this.word.split("");
 
-  splitWord.forEach((letter) => {
-    const $letter = document.createElement("display-character");
-    $letter.setAttribute("character", letter);
-    $letter.setAttribute("show", "false");
+    splitWord.forEach((letter) => {
+      const $letter = document.createElement("display-character");
 
-    $wordDisplay.appendChild($letter);
-  });
-}
+      $letter.setAttribute("character", letter);
+      $letter.setAttribute("show", "false");
 
-function checkForKeyPress() {
-  document.addEventListener("keydown", (e) => {
-    if (keys.flat().includes(e.key)) {
-      e.preventDefault();
-      useKey(e.key);
+      $wordDisplay.appendChild($letter);
+    });
+  }
+
+  displayCountdown() {
+    const $countdown = document.getElementById("countdown");
+
+    if (this.gameState !== GAME_STATE.PLAYING) {
+      $countdown.innerHTML = "Paused";
+    } else {
+      setInterval(() => {
+        if (this.countdown > 0) {
+          this.countdown--;
+          $countdown.innerHTML = this.countdown; // Format to minutes and secs
+        }
+      }, 1000);
     }
-  });
-}
+  }
 
-function useKey(key) {
-  if (usedKeys.includes(key)) return;
-  usedKeys.push(key);
+  checkForKeyPress() {
+    
+  }
+} 
 
-  const $key = document.querySelector(`[data-key="${key}"]`);
-  $key.classList.add("used");
-
-  const $displayKey = document.querySelector(`[data-display-key="${key}"]`);
-
-  if (!$displayKey) return;
-
-  $displayKey.setAttribute("show", "true");
-
-  console.log($displayKey.getAttribute("show"));
-}
-
-init();
+const game = new Game();
+game.init();

@@ -11,7 +11,7 @@ import { CONFIG } from "../../constants/config.js";
 export const getRandomWord = async (
   language = "en",
   minLength = 4,
-  maxLenght = 8
+  maxLenght = 8,
 ) => {
   const url = `${CONFIG.API_URL}?language=${language}&minLength=${minLength}&maxLength=${maxLenght}&words=1`;
 
