@@ -1,11 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Pangolin&family=Playwrite+DE+SAS:wght@100..400&display=swap");
+
 :root {
   --bg-color: #fdf6e3;
+  --card-color: #e4d4aa;
   /* --bg-color: #0e0e0e; This is just for when working at night */
   --text-color: #ce7421;
   --primary-color: #d8a7b1;
-  --secondary-color: #b6c2d9;
+  --secondary-color: #746e53;
   --accent-color: #b15b1a;
-  --border-color: #d3c0ae;
+  --border-color: #4b423a;
+
+  /* Keyboard Colors */
+  --key-base: #e4d4aa;
+  --key-light: #9a926e;
+  --key-shadow: #746e53;
+
+  --key-used: #746e53;
+  --key-used-light: #978474;
+  --key-used-shadow: #4b423a;
 }
 
 * {
@@ -22,7 +34,7 @@ body {
 }
 
 .font-serif-display {
-  font-family: "IM Fell English", serif;
+  font-family: "Pangolin", serif;
 }
 
 .victorian-bg {

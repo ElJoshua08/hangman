@@ -6,15 +6,22 @@ const keys = [
   ["z", "x", "c", "v", "b", "n", "m"],
 ];
 
-// Change everything to a game class
-
 // Game state enum
 const GAME_STATE = Object.freeze({
   PLAYING: Symbol("playing"),
   PAUSED: Symbol("paused"),
 });
 
+// Lost reason enum
+const LOST_REASONS = Object.freeze({
+  MAX_ATTEMPTS_EXCEEDED: Symbol("max_attempts_exceeded"),
+  MAX_TIME_EXCEEDED: Symbol("max_time_exceeded"),
+});
+
+// This needs to be configured inside
+// the constructor to enable multiple game modes.
 const MAX_COUNTDOWN = 120;
+const MAX_ATTEMPTS = 15;
 
 class Game {
   constructor() {
@@ -22,17 +29,24 @@ class Game {
     this.countdown = MAX_COUNTDOWN;
 
     this.word = "";
+    this.usedCharacters = [];
+    this.failedAttempts = 0;
   }
 
   async init() {
-    this.word = await getRandomWord();
+    this.word = await getRandomWord("es");
+    console.log({ word: this.word });
     this.setup();
   }
 
   setup() {
+    // * Display everything
     this.displayKeyboard();
     this.displayWordHint();
     this.displayCountdown();
+
+    // * Checks
+    this.checkForKeyPress();
   }
 
   displayKeyboard() {
@@ -50,7 +64,7 @@ class Game {
 
         $key.addEventListener("click", (e) => {
           e.preventDefault();
-          useKey(key);
+          this.checkCharacter(key);
         });
 
         $row.appendChild($key);
@@ -76,24 +90,85 @@ class Game {
   }
 
   displayCountdown() {
-    const $countdown = document.getElementById("countdown");
+    const $countdown = document
+      .getElementById("countdown")
+      .querySelector("span");
 
     if (this.gameState !== GAME_STATE.PLAYING) {
       $countdown.innerHTML = "Paused";
-    } else {
-      setInterval(() => {
-        if (this.countdown > 0) {
-          this.countdown--;
-          $countdown.innerHTML = this.countdown; // Format to minutes and secs
-        }
-      }, 1000);
+      return;
     }
+
+    // Clear any previous interval if needed
+    if (this.countdownInterval) clearInterval(this.countdownInterval);
+
+    this.countdownInterval = setInterval(() => {
+      if (this.countdown > 0) {
+        this.countdown--;
+        const minutes = Math.floor(this.countdown / 60);
+        const seconds = this.countdown % 60;
+        $countdown.innerHTML = `${minutes}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+
+        this.checkForGameLost();
+      } else {
+        clearInterval(this.countdownInterval);
+      }
+    }, 1000);
   }
 
   checkForKeyPress() {
-    
+    document.addEventListener("keydown", (e) => {
+      if (keys.flat().includes(e.key)) {
+        this.checkCharacter(e.key);
+      }
+    });
   }
-} 
+
+  checkCharacter(key) {
+    if (this.usedCharacters.includes(key)) return;
+    this.usedCharacters.push(key);
+
+    const wordSplit = this.word.split("");
+
+    if (wordSplit.includes(key)) {
+      const $displayCharacters = document.querySelectorAll(
+        `[character=${key}]`,
+      );
+      $displayCharacters.forEach(($displayCharacter) =>
+        $displayCharacter.setAttribute("show", "true"),
+      );
+    } else {
+      this.failedAttempts++;
+    }
+
+    const $character = document.querySelector(`[data-key=${key}]`);
+    $character.classList.toggle("used", true);
+  }
+
+  checkForGameLost() {
+    if (this.failedAttempts > MAX_ATTEMPTS) {
+      this.activateLostDialog(LOST_REASONS.MAX_ATTEMPTS_EXCEEDED);
+      clearInterval(this.countdownInterval);
+    }
+
+    if (this.countdown < 0) {
+      this.activateLostDialog(LOST_REASONS.MAX_TIME_EXCEEDED);
+      clearInterval(this.countdownInterval);
+    }
+  }
+
+  activateLostDialog(reason) {
+    console.log("game lost");
+
+    const $dialog = document.getElementById("game-over-dialog");
+
+    console.log($dialog);
+
+    $dialog.show();
+  }
+}
 
 const game = new Game();
 game.init();

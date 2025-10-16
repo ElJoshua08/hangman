@@ -8,15 +8,13 @@ import { CONFIG } from "../../constants/config.js";
  *
  * @returns {Promise<string>} random word
  */
-export const getRandomWord = async (
-  language = "en",
-  minLength = 4,
-  maxLenght = 8,
-) => {
-  const url = `${CONFIG.API_URL}?language=${language}&minLength=${minLength}&maxLength=${maxLenght}&words=1`;
+export const getRandomWord = async (language = "en", length = 6) => {
+  const url = `${CONFIG.API_URL}?language=${language}&length=${length}&type=lowercase&words=1`;
+  console.log({ url });
 
   try {
     const data = await fetch(url).then((res) => res.json());
+    console.log(data);
 
     return data[0].word;
   } catch (error) {
