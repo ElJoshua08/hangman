@@ -21,7 +21,6 @@ const LOST_REASONS = Object.freeze({
 // This needs to be configured inside
 // the constructor to enable multiple game modes.
 const MAX_COUNTDOWN = 120;
-const MAX_ATTEMPTS = 15;
 
 class Game {
   constructor() {
@@ -31,11 +30,16 @@ class Game {
     this.word = "";
     this.usedCharacters = [];
     this.failedAttempts = 0;
+
+    this.hangmanParts = Array.from(
+      document.querySelectorAll("svg path")
+    ).filter(($part) => $part.classList.length > 0);
+
+    this.maxAttemps = this.hangmanParts.length;
   }
 
   async init() {
     this.word = await getRandomWord("es");
-    console.log({ word: this.word });
     this.setup();
   }
 
@@ -45,8 +49,42 @@ class Game {
     this.displayWordHint();
     this.displayCountdown();
 
+    // * Hide hangman parts
+    this.hideHangman();
+
     // * Checks
-    this.checkForKeyPress();
+    this.onKeyDown();
+  }
+
+  // -----------------------
+  // ------- Hangman -------
+  // -----------------------
+  hideHangman() {
+    console.log(this.hangmanParts);
+
+    this.hangmanParts.forEach(($part) => {
+      $part.style.display = "none";
+    });
+  }
+
+  showNextHangmanPart() {
+    const PARTS_ORDER = [
+      "ground",
+      "column",
+      "ledge",
+      "corner",
+      "rope",
+      "head",
+      "body",
+      "arms",
+      "leg-left",
+      "leg-right",
+    ];
+
+    const currentPartIndex = PARTS_ORDER[this.failedAttempts - 1];
+
+    const $partToShow = document.querySelector(`.${currentPartIndex}`);
+    $partToShow.style.display = "block";
   }
 
   displayKeyboard() {
@@ -64,7 +102,7 @@ class Game {
 
         $key.addEventListener("click", (e) => {
           e.preventDefault();
-          this.checkCharacter(key);
+          this.checkKey(key);
         });
 
         $row.appendChild($key);
@@ -110,23 +148,23 @@ class Game {
         $countdown.innerHTML = `${minutes}:${seconds
           .toString()
           .padStart(2, "0")}`;
-
-        this.checkForGameLost();
       } else {
+        this.activateLostDialog(LOST_REASONS.MAX_TIME_EXCEEDED);
         clearInterval(this.countdownInterval);
       }
     }, 1000);
   }
 
-  checkForKeyPress() {
+  onKeyDown() {
     document.addEventListener("keydown", (e) => {
       if (keys.flat().includes(e.key)) {
-        this.checkCharacter(e.key);
+        this.checkKey(e.key);
       }
     });
   }
 
-  checkCharacter(key) {
+  // Check if the key is in the word
+  checkKey(key) {
     if (this.usedCharacters.includes(key)) return;
     this.usedCharacters.push(key);
 
@@ -134,29 +172,32 @@ class Game {
 
     if (wordSplit.includes(key)) {
       const $displayCharacters = document.querySelectorAll(
-        `[character=${key}]`,
+        `[character=${key}]`
       );
       $displayCharacters.forEach(($displayCharacter) =>
-        $displayCharacter.setAttribute("show", "true"),
+        $displayCharacter.setAttribute("show", "true")
       );
     } else {
-      this.failedAttempts++;
+      this.triggerBadAttempt();
     }
 
     const $character = document.querySelector(`[data-key=${key}]`);
     $character.classList.toggle("used", true);
   }
 
-  checkForGameLost() {
-    if (this.failedAttempts > MAX_ATTEMPTS) {
+  triggerBadAttempt() {
+    // First add a new bad attempt
+    this.failedAttempts++;
+
+    // Then show next hangman part
+    this.showNextHangmanPart();
+
+    // Then check for a game lost
+    if (this.failedAttempts >= this.maxAttemps) {
       this.activateLostDialog(LOST_REASONS.MAX_ATTEMPTS_EXCEEDED);
-      clearInterval(this.countdownInterval);
     }
 
-    if (this.countdown < 0) {
-      this.activateLostDialog(LOST_REASONS.MAX_TIME_EXCEEDED);
-      clearInterval(this.countdownInterval);
-    }
+    // This is sorted in this order because the hangman needs to appear before the game loss dialog.
   }
 
   activateLostDialog(reason) {

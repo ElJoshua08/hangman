@@ -29,7 +29,7 @@ body {
 .keyboard-key {
   background-color: var(--key-base);
   border: solid var(--key-shadow);
-  border-width: 10px;
+  border-width: 8px;
   border-top-color: var(--key-light);
   border-left-color: var(--key-light);
   border-radius: 10px;

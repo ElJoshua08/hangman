@@ -1,7 +1,10 @@
 const TRANSLATIONS = {
   "en-EN": {
+    // Constant around all pages
     title: "A Victorian Pastime",
     name: "Hangman",
+
+    // Home page
     howToPlay: "How to Play",
     hero: "A Game of Wits & Words",
     easy: "Easy",
@@ -11,10 +14,16 @@ const TRANSLATIONS = {
     hard: "Hard",
     hardDescription: "10+ letter words",
     start: "Begin Amusement",
+
+    // Play page
+
   },
   "es-ES": {
+    // Constant around all pages
     title: "Un Pasatiempo Victoriano",
     name: "El Ahorcado",
+
+    // Home page
     howToPlay: "¿Cómo Jugar?",
     hero: "Un Juego de Ingenio y Palabras",
     easy: "Fácil",

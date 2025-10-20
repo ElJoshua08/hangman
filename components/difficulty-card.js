@@ -22,7 +22,8 @@ class DifficultyCard extends HTMLElement {
     const key = this.getAttribute("key");
     const descriptionKey = this.getAttribute("description-key");
 
-    this.className = "p-6 card difficulty-card transition-all duration-300 min-h-26";
+    this.className =
+      "p-6 card difficulty-card transition-all duration-300 min-h-26 w-full max-w-2xl";
     this.innerHTML = `<h3 class="font-serif-display text-2xl font-normal text-[var(--text-color)]"
           data-language-key="${key}">
         ${title}
